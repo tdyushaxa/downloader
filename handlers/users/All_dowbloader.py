@@ -1,5 +1,7 @@
 import io
 import logging
+import os
+
 from aiogram import types
 from aiogram.dispatcher.filters import Text
 from pytube import YouTube
@@ -29,12 +31,12 @@ async def cmd_answer(message: types.Message):
     author = yt.author
     resolution = yt.streams.get_highest_resolution().resolution
     stream = yt.streams.filter(progressive=True, file_extension="mp4")
-    stream.get_highest_resolution().download(f'{call.message.chat.id}', f'{call.message.chat.id}_{yt.title}')
-    with open(f"{call.message.chat.id}/{call.message.chat.id}_{yt.title}", 'rb') as video:
-        await bot.send_video(call.message.chat.id, video, caption=f"📹 <b>{title}</b> \n"  # Title#
+    stream.get_highest_resolution().download(f'{message.chat.id}', f'{message.chat.id}_{yt.title}')
+    with open(f"{message.chat.id}/{message.chat.id}_{yt.title}", 'rb') as video:
+        await message.answer_video(message.chat.id, video, caption=f"📹 <b>{title}</b> \n"  # Title#
                                                                     f"👤 <b>{author}</b> \n\n",  # Author Of Channel#
                                 parse_mode='HTML')
-        os.remove(f"{call.message.chat.id}/{call.message.chat.id}_{yt.title}")
+        os.remove(f"{message.chat.id}/{message.chat.id}_{yt.title}")
 
 
 
