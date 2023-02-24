@@ -39,12 +39,14 @@ async def cmd_answer(message: types.Message):
 
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(types.InlineKeyboardButton(text="yuklash", callback_data="download"))
+   
         await message.answer_photo(f'{picture}', caption=f"📹 <b>{title}</b> <a href='{url}'>→</a> \n"
                                                          f"👤 <b>{author}</b> <a href='{channel}'>→</a> \n"
                                                    ,
                                    parse_mode='HTML', reply_markup=keyboard)  # Views#
+        await.message.answer('yuklanmoqda... ')
     else:
-        await message.answer(f"❗️<b>yuklab bo'lmadi я!</b>", parse_mode='HTML')
+        await message.answer(f"❗️<b>yuklab bo'lmadi!</b>", parse_mode='HTML')
 
 
 @dp.callback_query_handler(text="download")
