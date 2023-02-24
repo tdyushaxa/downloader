@@ -25,18 +25,16 @@ async def downloader(message:types.Message):
 
 @dp.message_handler(Text(startswith='https://youtu'))
 async def cmd_answer(message: types.Message):
-    url = message.text
-    yt = YouTube(url)
-    title = yt.title
-    author = yt.author
-    resolution = yt.streams.get_highest_resolution().resolution
-    stream = yt.streams.filter(progressive=True, file_extension="mp4")
-    stream.get_highest_resolution().download(f'{message.chat.id}', f'{message.chat.id}_{yt.title}')
-    with open(f"{message.chat.id}/{message.chat.id}_{yt.title}", 'rb') as video:
-        await message.answer_video(message.chat.id, video, caption=f"📹 <b>{title}</b> \n"  # Title#
-                                                                    f"👤 <b>{author}</b> \n\n",  # Author Of Channel#
-                                parse_mode='HTML')
-        os.remove(f"{message.chat.id}/{message.chat.id}_{yt.title}")
+    link=message.text
+    buffer=io.BytesIO()
+    downl = YouTube(link).streams.get_highest_resolution()
+    downl.stream_to_buffer(buffer=buffer)
+    buffer.seek(0)
+    file_name=downl.title
+    await message.answer(f'{message.from_user.full_name} video yuklanmoqda...')
+    await message.answer_video(video=buffer,caption=file_name)
+    buffer.seek(0)
+
 
 
 
