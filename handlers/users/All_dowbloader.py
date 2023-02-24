@@ -44,7 +44,6 @@ async def cmd_answer(message: types.Message):
                                                          f"👤 <b>{author}</b> <a href='{channel}'>→</a> \n"
                                                    ,
                                    parse_mode='HTML', reply_markup=keyboard)  # Views#
-        await.message.answer('yuklanmoqda... ')
     else:
         await message.answer(f"❗️<b>yuklab bo'lmadi!</b>", parse_mode='HTML')
 
@@ -59,6 +58,7 @@ async def button_download(call: types.CallbackQuery):
     stream = yt.streams.filter(progressive=True, file_extension="mp4")
     stream.get_highest_resolution().download(f'{call.message.chat.id}', f'{call.message.chat.id}_{yt.title}')
     with open(f"{call.message.chat.id}/{call.message.chat.id}_{yt.title}", 'rb') as video:
+        await message.answer(f"❗️<b>Yulanmoqdaa...</b>", parse_mode='HTML')
         await bot.send_video(call.message.chat.id, video, caption=f"📹 <b>{title}</b> \n"  # Title#
                                                                   f"👤 <b>{author}</b> \n\n",  # Author Of Channel#
                              parse_mode='HTML')
