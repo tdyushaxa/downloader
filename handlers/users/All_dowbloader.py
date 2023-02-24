@@ -21,21 +21,20 @@ async def downloader(message:types.Message):
         await message.answer(lookup['title'])
 
 
-@dp.message_handler()
+@dp.message_handler(Text(startswith='https://youtu'))
 async def cmd_answer(message: types.Message):
-    if message.text.startswith('https://youtube.be/') or message.text.startswith(
-            'https://www.youtube.com/') or message.text.startswith('https://youtu.be/'):
-        yt = YouTube(url)
-        title = yt.title
-        author = yt.author
-        resolution = yt.streams.get_highest_resolution().resolution
-        stream = yt.streams.filter(progressive=True, file_extension="mp4")
-        stream.get_highest_resolution().download(f'{call.message.chat.id}', f'{call.message.chat.id}_{yt.title}')
-        with open(f"{call.message.chat.id}/{call.message.chat.id}_{yt.title}", 'rb') as video:
-            await bot.send_video(call.message.chat.id, video, caption=f"📹 <b>{title}</b> \n"  # Title#
+    url = message.text
+    yt = YouTube(url)
+    title = yt.title
+    author = yt.author
+    resolution = yt.streams.get_highest_resolution().resolution
+    stream = yt.streams.filter(progressive=True, file_extension="mp4")
+    stream.get_highest_resolution().download(f'{call.message.chat.id}', f'{call.message.chat.id}_{yt.title}')
+    with open(f"{call.message.chat.id}/{call.message.chat.id}_{yt.title}", 'rb') as video:
+        await bot.send_video(call.message.chat.id, video, caption=f"📹 <b>{title}</b> \n"  # Title#
                                                                     f"👤 <b>{author}</b> \n\n",  # Author Of Channel#
                                 parse_mode='HTML')
-            os.remove(f"{call.message.chat.id}/{call.message.chat.id}_{yt.title}")
+        os.remove(f"{call.message.chat.id}/{call.message.chat.id}_{yt.title}")
 
 
 
